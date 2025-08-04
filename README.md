@@ -1,4 +1,4 @@
-# Shaking the Rust off
+# Shaking the Rust Off
 Silly little platformer prototype with a 'rusting' mechanic.
 
 ## Planned Features:
