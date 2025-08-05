@@ -13,14 +13,15 @@ class ShakingTheRustOff extends World {
   int width = 1000;
   int height = 800;
   
-  double tickRate = 0.05;
+  double tickRate = 0.001;
   
   ArrayList<Robot> bots = new ArrayList<Robot>();
+  Robot bot = new Robot();
   
   public static void main(String[] args) {
     ShakingTheRustOff ex = new ShakingTheRustOff();
+    //ex.makeBots(20);
     ex.bigBang(ex.width, ex.height, ex.tickRate);
-    ex.makeBots(20);
   }
 
   //make some bots
@@ -38,10 +39,24 @@ class ShakingTheRustOff extends World {
   // EFFECT: mutates the WorldScene to reflect the current game
   public WorldScene makeScene() {
     WorldScene scene = new WorldScene(this.width, this.height);
-    for (Robot bot : bots) {
-      scene.placeImageXY(bot.drawRobot(), bot.x, bot.y);
-    }
+    scene.placeImageXY(this.bot.drawRobot(), this.bot.x, this.bot.y);
     return scene;
+  }
+  
+  //updates the world according to time
+  public void onTick() {
+    this.bot.rust();
+  }
+  
+  //updates the world according to the key event
+  public void onKeyEvent(String key) {
+    if (key.equals("right")) {
+      this.bot.horizMove(1);
+    } else if (key.equals("left")) {
+      this.bot.horizMove(-1);
+    } else if (key.equals("up")) {
+      this.bot.derust();
+    }
   }
   
 }

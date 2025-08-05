@@ -6,14 +6,18 @@ import javalib.worldimages.*;
 //represents the player character robot
 public class Robot {
   //default rustiness is no rustiness
-  double rustiness = 0.5;
+  double rustiness = 0.0;
+  //speed of rusting
+  double rustSpeed = 0.0005;
+  //represents the amount of rust 'shaking' removes
+  double shakeAmount = 0.2;
   //colors representing the least and most rusty
   Color unrustyColor = new Color(182, 187, 191);
   Color rustyColor = new Color(182, 89, 55);
   //current color
   Color currentColor = unrustyColor;
   //default movement speed
-  double fullSpeed = 16.0;
+  double fullSpeed = 32.0;
   //fraction of full speed
   double speedLevel = 1.0;
   //robot dimensions
@@ -56,9 +60,36 @@ public class Robot {
     int bDiff = this.unrustyColor.getBlue() - this.rustyColor.getBlue();
     int gNew = (int) (this.unrustyColor.getGreen() - (gDiff * this.rustiness));
     int bNew = (int) (this.unrustyColor.getBlue() - (bDiff * this.rustiness));
-
     this.currentColor = new Color(182, gNew, bNew);
+    this.speedLevel = 1.0 - this.rustiness;
   }
   
+  //increases rustiness until rustiness hits 1
+  // EFFECT: mutates rustiness
+  void rust() {
+    if (this.rustiness <= 1.0) {
+      this.rustiness = this.rustiness + this.rustSpeed; 
+    }
+  }
+  
+  //horizontal movement
+  // EFFECT: mutates x
+  void horizMove(int direction) {
+    int speed = (int) (this.fullSpeed * this.speedLevel);
+    this.x = this.x + (speed * direction);
+  }
+  
+  //derust
+  // EFFECT: mutates rustiness
+  void derust() {
+    if (this.rustiness < this.shakeAmount) {
+      this.rustiness = 0.0;
+    } else {
+      this.rustiness = this.rustiness - this.shakeAmount;
+    }
+  }
+  
+  //falling
+  // EFFECT: mutates y
 
 }
