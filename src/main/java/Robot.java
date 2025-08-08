@@ -6,26 +6,26 @@ import javalib.worldimages.*;
 //represents the player character robot
 public class Robot {
   //default rustiness is no rustiness
-  double rustiness = 0.0;
+  public double rustiness = 0.0;
   //speed of rusting
-  double rustSpeed = 0.0005;
+  public double rustSpeed = 0.0005;
   //represents the amount of rust 'shaking' removes
-  double shakeAmount = 0.2;
+  public double shakeAmount = 0.2;
   //colors representing the least and most rusty
   Color unrustyColor = new Color(182, 187, 191);
   Color rustyColor = new Color(182, 89, 55);
   //current color
-  Color currentColor = unrustyColor;
+  public Color currentColor = unrustyColor;
   //default movement speed
   double fullSpeed = 32.0;
   //fraction of full speed
-  double speedLevel = 1.0;
+  public double speedLevel = 1.0;
   //robot dimensions
   int width = 40;
   int height = 80;
   //robot location
-  int x = 500;
-  int y = 400;
+  public int x = 500;
+  public int y = 400;
   //eye color
   Color eyeColor = new Color(252, 238, 172);
   
@@ -44,8 +44,7 @@ public class Robot {
   }
   
   //creates an image of the robot
-  WorldImage drawRobot() {
-    this.rustEffect();
+  public WorldImage drawRobot() {
     WorldImage base = new RectangleImage(this.width, this.height, OutlineMode.SOLID, this.currentColor);
     WorldImage eye = new RectangleImage(10, 16, OutlineMode.SOLID, this.eyeColor);
     base = new OverlayOffsetImage(eye, -8, 8, base);
@@ -55,7 +54,7 @@ public class Robot {
   
   //sets the currentColor and speedLevel based on rustiness
   // EFFECT: mutates currentColor and speedLevel
-  void rustEffect() {
+  public void rustEffect() {
     int gDiff = this.unrustyColor.getGreen() - this.rustyColor.getGreen();
     int bDiff = this.unrustyColor.getBlue() - this.rustyColor.getBlue();
     int gNew = (int) (this.unrustyColor.getGreen() - (gDiff * this.rustiness));
@@ -66,8 +65,8 @@ public class Robot {
   
   //increases rustiness until rustiness hits 1
   // EFFECT: mutates rustiness
-  void rust() {
-    if (this.rustiness <= 1.0) {
+  public void rust() {
+    if (this.rustiness <= 1.0 - this.rustSpeed) {
       this.rustiness = this.rustiness + this.rustSpeed; 
     }
   }
@@ -81,7 +80,7 @@ public class Robot {
   
   //derust
   // EFFECT: mutates rustiness
-  void derust() {
+  public void derust() {
     if (this.rustiness < this.shakeAmount) {
       this.rustiness = 0.0;
     } else {

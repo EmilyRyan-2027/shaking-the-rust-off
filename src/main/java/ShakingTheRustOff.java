@@ -1,37 +1,42 @@
 package main.java;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 import javalib.impworld.*;
-import java.awt.Color;
-import javalib.worldimages.*;
 
 //represents the rust game
-class ShakingTheRustOff extends World {
+public class ShakingTheRustOff extends World {
+  public int widthTiles = 80;
+  public int heightTiles = 60;
+  public int tileLength = 10;
   //the width and height of the window
-  int width = 1000;
-  int height = 800;
+  public int width = widthTiles * tileLength;
+  public int height = heightTiles * tileLength;
   
   double tickRate = 0.001;
   
-  ArrayList<Robot> bots = new ArrayList<Robot>();
-  Robot bot = new Robot();
+  //in case you wanted some bots
+  //ArrayList<Robot> bots = new ArrayList<Robot>();
+  
+  //our player character robot
+  public Robot bot = new Robot(0.0, this.width/2);
+  
+  //the first screen we see
+  public Stage firstStage = new Stage(this, 3);
+  
+  //default constructor
+  public ShakingTheRustOff () {}
+  
+  //gravity
+  public int g = 10;
+  
+  //constructor specifying stage dimensions
+  public ShakingTheRustOff (int widthTiles, int heightTiles) {
+    this.widthTiles = widthTiles;
+    this.heightTiles = heightTiles;
+  }
   
   public static void main(String[] args) {
     ShakingTheRustOff ex = new ShakingTheRustOff();
-    //ex.makeBots(20);
     ex.bigBang(ex.width, ex.height, ex.tickRate);
-  }
-
-  //make some bots
-  void makeBots(int numberBots) {
-    int margin = 20;
-    int spacing = (this.width - margin*2)/(numberBots+1);
-    double gradation = 1.0/numberBots;
-    for (int i = 1; i <= numberBots; i++) {
-      bots.add(new Robot((gradation * i), (spacing * i) + margin));
-    }
   }
   
   @Override
@@ -39,6 +44,7 @@ class ShakingTheRustOff extends World {
   // EFFECT: mutates the WorldScene to reflect the current game
   public WorldScene makeScene() {
     WorldScene scene = new WorldScene(this.width, this.height);
+    scene = this.firstStage.drawGrid(this, scene);
     scene.placeImageXY(this.bot.drawRobot(), this.bot.x, this.bot.y);
     return scene;
   }
@@ -46,6 +52,7 @@ class ShakingTheRustOff extends World {
   //updates the world according to time
   public void onTick() {
     this.bot.rust();
+    this.bot.rustEffect();
   }
   
   //updates the world according to the key event
