@@ -15,5 +15,8 @@ public abstract class Tile {
     square = square.movePinholeTo(new Posn(wrld.tileLength/-2, wrld.tileLength/-2));
     return square;
   }
+  
+  //determines if the tile is standable ground
+  abstract boolean isStandable();
 
 }

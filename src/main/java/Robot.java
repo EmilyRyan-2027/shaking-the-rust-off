@@ -25,9 +25,11 @@ public class Robot {
   int height = 80;
   //robot location
   public int x = 500;
-  public int y = 400;
+  public int y = 100;
   //eye color
   Color eyeColor = new Color(252, 238, 172);
+  //downward velocity
+  int downVelocity = 0;
   
   //default constructor
   Robot() {}
@@ -78,6 +80,14 @@ public class Robot {
     this.x = this.x + (speed * direction);
   }
   
+  //jump
+  // EFFECT: mutates velocity, initiates derust
+  void jump() {
+    this.y = this.y - 1;
+    this.downVelocity = -20;
+    this.derust();
+  }
+  
   //derust
   // EFFECT: mutates rustiness
   public void derust() {
@@ -88,7 +98,48 @@ public class Robot {
     }
   }
   
-  //falling
+  //getBottomLeft
+  //returns a Posn of the robot's bottom left corner
+  public Posn getBottomLeft() {
+    int x = this.x - (this.width/2);
+    int y = this.y + (this.height/2);
+    return new Posn(x, y);
+  }
+  
+  //fall
   // EFFECT: mutates y
+  public void fall(ShakingTheRustOff wrld, Stage stg) {
+    this.downVelocity = this.downVelocity + wrld.g;
+    int deltaY = 0;
+    if (this.downVelocity > 0) {
+      while ((!this.isStanding(wrld, stg, 
+          new Posn(this.getBottomLeft().x, this.getBottomLeft().y + deltaY))) && 
+          deltaY < this.downVelocity) {
+        deltaY = deltaY + 1;
+      }
+    } else {
+      deltaY = this.downVelocity;
+    }
+    this.y = this.y + deltaY;
+  }
+  
+  //isStanding
+  //determines if the given position is on the ground
+  public boolean isStanding(ShakingTheRustOff wrld, Stage stg, Posn psn) {
+    if ((stg.isGround(wrld, psn.x, psn.y)) && 
+        (stg.isGround(wrld, psn.x + this.width, psn.y))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  //isInGround
+  //determines if the given position is in the ground
+  public boolean isInGround(ShakingTheRustOff wrld, Stage stg, Posn psn) {
+    Posn oneBelow = new Posn(psn.x, psn.y + 1);
+    return this.isStanding(wrld, stg, oneBelow);
+  }
+  
 
 }

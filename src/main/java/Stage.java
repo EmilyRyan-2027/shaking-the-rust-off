@@ -58,4 +58,11 @@ public class Stage {
     return scn;
   }
   
+  //determines if the given position is in a ground tile
+  public boolean isGround(ShakingTheRustOff wrld, int x, int y) {
+    int tileX = x/wrld.tileLength;
+    int tileY = y/wrld.tileLength;
+    return this.tiles.get(tileY).get(tileX).isStandable();
+  }
+  
 }

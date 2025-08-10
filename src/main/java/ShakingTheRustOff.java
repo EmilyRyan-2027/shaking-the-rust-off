@@ -11,7 +11,7 @@ public class ShakingTheRustOff extends World {
   public int width = widthTiles * tileLength;
   public int height = heightTiles * tileLength;
   
-  double tickRate = 0.001;
+  double tickRate = 0.005;
   
   //in case you wanted some bots
   //ArrayList<Robot> bots = new ArrayList<Robot>();
@@ -21,12 +21,13 @@ public class ShakingTheRustOff extends World {
   
   //the first screen we see
   public Stage firstStage = new Stage(this, 3);
+  public Stage currentStage = this.firstStage;
   
   //default constructor
   public ShakingTheRustOff () {}
   
-  //gravity
-  public int g = 10;
+  //Acceleration due to gravity
+  public int g = 1;
   
   //constructor specifying stage dimensions
   public ShakingTheRustOff (int widthTiles, int heightTiles) {
@@ -44,13 +45,14 @@ public class ShakingTheRustOff extends World {
   // EFFECT: mutates the WorldScene to reflect the current game
   public WorldScene makeScene() {
     WorldScene scene = new WorldScene(this.width, this.height);
-    scene = this.firstStage.drawGrid(this, scene);
+    scene = this.currentStage.drawGrid(this, scene);
     scene.placeImageXY(this.bot.drawRobot(), this.bot.x, this.bot.y);
     return scene;
   }
   
   //updates the world according to time
   public void onTick() {
+    this.bot.fall(this, currentStage);
     this.bot.rust();
     this.bot.rustEffect();
   }
@@ -62,7 +64,9 @@ public class ShakingTheRustOff extends World {
     } else if (key.equals("left")) {
       this.bot.horizMove(-1);
     } else if (key.equals("up")) {
-      this.bot.derust();
+      if (this.bot.isStanding(this, currentStage, this.bot.getBottomLeft())) {
+        this.bot.jump();
+      }
     }
   }
   

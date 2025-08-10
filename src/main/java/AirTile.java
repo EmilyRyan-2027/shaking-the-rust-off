@@ -10,4 +10,10 @@ public class AirTile extends Tile{
     return new Color(220, 232, 247);
   }
 
+  //determines if the tile is standable ground
+  @Override
+  boolean isStandable() {
+    return false;
+  }
+
 }

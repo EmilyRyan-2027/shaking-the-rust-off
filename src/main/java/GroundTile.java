@@ -10,4 +10,10 @@ public class GroundTile extends Tile{
     return Color.DARK_GRAY;
   }
 
+  //determines if the tile is standable ground
+  @Override
+  boolean isStandable() {
+    return true;
+  }
+
 }
